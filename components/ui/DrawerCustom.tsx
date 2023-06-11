@@ -18,6 +18,7 @@ import { Card, Col, Grid, Row, Text } from "@nextui-org/react";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { appApi } from "@/apis";
 import { Box as BoxNext } from "./Box";
+import { currency } from "@/utils";
 type Anchor = "top" | "left" | "bottom" | "right";
 export type OrderResponseBody = {
   id: string;
@@ -110,7 +111,10 @@ export default function DrawerCustom() {
                       {product.title}
                     </Text>
                     <Text>Cantitad: {product.quantity}</Text>
-                    <Text>SubTotal: {product.price * product.quantity}</Text>
+                    <Text>
+                      SubTotal:{" "}
+                      {currency.format(product.price * product.quantity)}
+                    </Text>
                   </Row>
                 </Grid>
               </Grid.Container>
@@ -125,12 +129,14 @@ export default function DrawerCustom() {
             >
               <Text h3>
                 Total{" "}
-                {cart
-                  .flatMap((product) => product.price * product.quantity)
-                  .reduce(
-                    (accumulator, currentValue) => accumulator + currentValue,
-                    0
-                  )}
+                {currency.format(
+                  cart
+                    .flatMap((product) => product.price * product.quantity)
+                    .reduce(
+                      (accumulator, currentValue) => accumulator + currentValue,
+                      0
+                    )
+                )}
               </Text>
             </Row>
             <PayPalButtons

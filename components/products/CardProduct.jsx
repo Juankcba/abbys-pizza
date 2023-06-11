@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react'
 import { Box } from '../ui/Box';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { CartContext } from '../../context/cart/cartContext';
+import { currency } from '@/utils';
 const CardProduct = ({ product }) => {
     const { addProductToCart } = useContext(CartContext)
     const [isPressed, setIsPressed] = useState(false);
@@ -61,7 +62,7 @@ const CardProduct = ({ product }) => {
                 <Row wrap="wrap" justify="space-between" align="center">
                     <Text b>{product.title}</Text>
                     <Text css={{ color: "$accents7", fontWeight: "$semibold", fontSize: "$sm" }}>
-                        {product.price}
+                        {currency.format(product.price)}
                     </Text>
                 </Row>
             </Card.Footer>
