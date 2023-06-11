@@ -7,6 +7,7 @@ import ListProducts from "../components/products/ListProducts";
 export default function Home() {
   return (
     <Layout>
+      <Text h1>Bienvenidos al Pocito Dulce</Text>
       <ListProducts />
     </Layout>
   );
