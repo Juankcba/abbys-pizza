@@ -139,7 +139,7 @@ export default function DrawerCustom() {
                   purchase_units: [
                     {
                       amount: {
-                        value: cart
+                        value: `${cart
                           .flatMap(
                             (product) => product.price * product.quantity
                           )
@@ -147,7 +147,7 @@ export default function DrawerCustom() {
                             (accumulator, currentValue) =>
                               accumulator + currentValue,
                             0
-                          ),
+                          )}`,
                       },
                     },
                   ],
