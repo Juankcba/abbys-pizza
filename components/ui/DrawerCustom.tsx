@@ -27,16 +27,27 @@ import { appApi } from "@/apis";
 import { Box as BoxNext } from "./Box";
 import { currency } from "@/utils";
 import CheckoutStepper from "../products/CheckoutStepper";
+import { ICartProduct } from "@/interfaces";
 type Anchor = "top" | "left" | "bottom" | "right";
 
 export default function DrawerCustom() {
-  const { cart } = React.useContext(CartContext);
+  const { cart, updateCartQuantity } = React.useContext(CartContext);
   const [state, setState] = React.useState({
     top: false,
     left: false,
     bottom: false,
     right: false,
   });
+
+  const countQuantity = (state: boolean, product: ICartProduct) => {
+    let aux = product;
+    if (state) {
+      aux.quantity = product.quantity + 1;
+    } else {
+      aux.quantity = product.quantity <= 1 ? 0 : product.quantity - 1;
+    }
+    updateCartQuantity(aux);
+  };
 
   console.log(cart);
 
@@ -56,7 +67,7 @@ export default function DrawerCustom() {
 
   const list = (anchor: Anchor) => (
     <Box
-      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
+      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 350 }}
       role="presentation"
     >
       <Row css={{ m: "24px" }}>
@@ -70,14 +81,20 @@ export default function DrawerCustom() {
                 <Grid xs={4}>
                   <Card>
                     <Card.Body
-                      css={{ p: 0, position: "relative", bottom: 0, left: 0 }}
+                      css={{
+                        p: 0,
+                        position: "relative",
+                        bottom: 0,
+                        left: 0,
+                        bg: "transparent",
+                      }}
                     >
                       <Card.Image
                         src={product.image}
                         alt={product.title}
                         objectFit="cover"
                         width="100%"
-                        height={100}
+                        height={140}
                       />
                     </Card.Body>
                   </Card>
@@ -92,6 +109,33 @@ export default function DrawerCustom() {
                       SubTotal:{" "}
                       {currency.format(product.price * product.quantity)}
                     </Text>
+                    <Row
+                      gap={1}
+                      css={{
+                        p: 0,
+                        mt: "8px",
+                        width: "100%",
+                        gap: "12px",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                      }}
+                    >
+                      <NextButton
+                        flat
+                        auto
+                        onPress={() => countQuantity(false, product)}
+                      >
+                        -
+                      </NextButton>
+                      <Text>{product.quantity}</Text>
+                      <NextButton
+                        flat
+                        auto
+                        onPress={() => countQuantity(true, product)}
+                      >
+                        +
+                      </NextButton>
+                    </Row>
                   </Row>
                 </Grid>
               </Grid.Container>
