@@ -15,10 +15,23 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import Image from "next/image";
 import { Card, Col, Grid, Row, Text } from "@nextui-org/react";
+import { PayPalButtons } from "@paypal/react-paypal-js";
+import { appApi } from "@/apis";
+import { Box as BoxNext } from "./Box";
 type Anchor = "top" | "left" | "bottom" | "right";
+export type OrderResponseBody = {
+  id: string;
+  status:
+    | "COMPLETED"
+    | "SAVED"
+    | "APPROVED"
+    | "VOIDED"
+    | "PAYER_ACTION_REQUIRED";
+};
 
 export default function DrawerCustom() {
   const { cart } = React.useContext(CartContext);
+  const [isPaying, setIsPaying] = React.useState(false);
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -27,6 +40,25 @@ export default function DrawerCustom() {
   });
 
   console.log(cart);
+
+  const onOrderCompleted = async (details: OrderResponseBody) => {
+    if (details.status !== "COMPLETED") {
+      return alert("No hay pago en Paypal");
+    }
+
+    setIsPaying(true);
+
+    try {
+      /* const { data } = await appApi.post(`/orders/pay`, {
+        transactionId: details.id,
+        orderId: order._id
+      }); */
+    } catch (error) {
+      setIsPaying(false);
+      console.log(error);
+      alert("Error");
+    }
+  };
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -83,6 +115,53 @@ export default function DrawerCustom() {
                 </Grid>
               </Grid.Container>
             ))}
+            <Row
+              css={{
+                borderTop: "1px solid $accents4",
+                borderBottom: "1px solid $accents4",
+                p: "10px 0",
+                mb: "24px",
+              }}
+            >
+              <Text h3>
+                Total{" "}
+                {cart
+                  .flatMap((product) => product.price * product.quantity)
+                  .reduce(
+                    (accumulator, currentValue) => accumulator + currentValue,
+                    0
+                  )}
+              </Text>
+            </Row>
+            <PayPalButtons
+              createOrder={(data, actions) => {
+                return actions.order.create({
+                  purchase_units: [
+                    {
+                      amount: {
+                        value: cart
+                          .flatMap(
+                            (product) => product.price * product.quantity
+                          )
+                          .reduce(
+                            (accumulator, currentValue) =>
+                              accumulator + currentValue,
+                            0
+                          ),
+                      },
+                    },
+                  ],
+                });
+              }}
+              onApprove={(data, actions) => {
+                return actions.order!.capture().then((details: any) => {
+                  onOrderCompleted(details);
+                  // console.log({ details  })
+                  // const name = details.payer.name.given_name;
+                  // alert(`Transaction completed by ${name}`);
+                });
+              }}
+            />
           </Row>
         )}
       </Row>

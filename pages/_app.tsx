@@ -12,20 +12,25 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { UiProvider } from "@/context/ui";
 import { CartProvider } from "@/context";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     // 2. Use at the root of your app
-    <CartProvider>
-      <UiProvider>
-        <ThemeProvider theme={materialTheme}>
-          <NextUIProvider theme={darkTheme}>
-            <CssBaseline />
-            <Component {...pageProps} />
-            <ToastContainer />
-          </NextUIProvider>
-        </ThemeProvider>
-      </UiProvider>
-    </CartProvider>
+    <PayPalScriptProvider
+      options={{ "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "" }}
+    >
+      <CartProvider>
+        <UiProvider>
+          <ThemeProvider theme={materialTheme}>
+            <NextUIProvider theme={darkTheme}>
+              <CssBaseline />
+              <Component {...pageProps} />
+              <ToastContainer />
+            </NextUIProvider>
+          </ThemeProvider>
+        </UiProvider>
+      </CartProvider>
+    </PayPalScriptProvider>
   );
 }
