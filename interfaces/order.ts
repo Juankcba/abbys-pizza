@@ -1,9 +1,8 @@
-import { ISize, IUser } from './';
 
 export interface IOrder {
 
     _id?: string;
-    user?: IUser | string;
+    user?: string;
     orderItems: IOrderItem[];
     shippingAddress: ShippingAddress;
     paymentResult?: string;
