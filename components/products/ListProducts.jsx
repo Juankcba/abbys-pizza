@@ -5,13 +5,13 @@ import { Grid, Container, Text } from '@nextui-org/react';
 const ListProducts = () => {
 
     const [products, setProducts] = useState([
-        { title: 'Sodas', image: '/assets/products/soda3.jpg', price: 100, id: 0, description: 'Refrescante Soda' },
-        { title: 'Sodas', image: '/assets/products/soda3.jpg', price: 100, id: 1, description: 'Refrescante Soda' },
-        { title: 'Sodas', image: '/assets/products/soda3.jpg', price: 100, id: 2, description: 'Refrescante Soda' },
-        { title: 'Sodas', image: '/assets/products/soda3.jpg', price: 100, id: 3, description: 'Refrescante Soda' },
-        { title: 'Sodas', image: '/assets/products/soda3.jpg', price: 100, id: 4, description: 'Refrescante Soda' },
-        { title: 'Sodas', image: '/assets/products/soda3.jpg', price: 100, id: 5, description: 'Refrescante Soda' },
-        { title: 'Sodas', image: '/assets/products/soda3.jpg', price: 100, id: 6, description: 'Refrescante Soda' }
+        { title: 'Sodas', slug: 'sodas', image: '/assets/products/soda3.jpg', price: 100, id: 0, description: 'Refrescante Soda' },
+        { title: 'Sodas', slug: 'sodas', image: '/assets/products/soda3.jpg', price: 100, id: 1, description: 'Refrescante Soda' },
+        { title: 'Sodas', slug: 'sodas', image: '/assets/products/soda3.jpg', price: 100, id: 2, description: 'Refrescante Soda' },
+        { title: 'Sodas', slug: 'sodas', image: '/assets/products/soda3.jpg', price: 100, id: 3, description: 'Refrescante Soda' },
+        { title: 'Sodas', slug: 'sodas', image: '/assets/products/soda3.jpg', price: 100, id: 4, description: 'Refrescante Soda' },
+        { title: 'Sodas', slug: 'sodas', image: '/assets/products/soda3.jpg', price: 100, id: 5, description: 'Refrescante Soda' },
+        { title: 'Sodas', slug: 'sodas', image: '/assets/products/soda3.jpg', price: 100, id: 6, description: 'Refrescante Soda' }
     ])
 
     return (

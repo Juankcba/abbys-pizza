@@ -93,6 +93,10 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
     dispatch({ type: "[Cart] - Update order summary", payload: orderSummary });
   }, [state.cart]);
 
+  const emptyProductsOfCart = () => {
+    dispatch({ type: "[Cart] - Order complete" });
+  };
+
   const addProductToCart = (product: ICartProduct) => {
     //! Nivel 1
     // dispatch({ type: '[Cart] - Add Product', payload: product });
@@ -160,15 +164,11 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
     hasError: boolean;
     message: string;
   }> => {
-    if (!state.shippingAddress) {
-      throw new Error("No hay dirección de entrega");
-    }
-
     const body: IOrder = {
       orderItems: state.cart.map((p) => ({
         ...p,
       })),
-      shippingAddress: state.shippingAddress,
+
       numberOfItems: state.numberOfItems,
       subTotal: state.subTotal,
       tax: state.tax,
@@ -180,7 +180,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
     try {
       const { data } = await appApi.post<IOrder>("/orders", body);
 
-      dispatch({ type: "[Cart] - Order complete" });
+      /* dispatch({ type: "[Cart] - Order complete" }); */
 
       return {
         hasError: false,
@@ -213,6 +213,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
 
         // Orders
         createOrder,
+        emptyProductsOfCart,
       }}
     >
       {children}

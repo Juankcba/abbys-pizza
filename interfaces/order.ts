@@ -4,7 +4,6 @@ export interface IOrder {
     _id?: string;
     user?: string;
     orderItems: IOrderItem[];
-    shippingAddress: ShippingAddress;
     paymentResult?: string;
 
     numberOfItems: number;
