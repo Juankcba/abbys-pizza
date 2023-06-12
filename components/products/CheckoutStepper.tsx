@@ -6,7 +6,7 @@ import {
   Input,
   Loading,
 } from "@nextui-org/react";
-import React from "react";
+import React, { Dispatch, FC, SetStateAction } from "react";
 import { currency } from "@/utils";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { CartContext } from "@/context";
@@ -21,11 +21,15 @@ export type OrderResponseBody = {
     | "VOIDED"
     | "PAYER_ACTION_REQUIRED";
 };
+interface Props {
+  step: number;
+  setStep?: Dispatch<SetStateAction<number>>;
+}
 
-const CheckoutStepper = () => {
+const CheckoutStepper: FC<Props> = ({ step, setStep }) => {
   const [isPaying, setIsPaying] = React.useState(false);
   const [orderId, setOrderId] = React.useState<any>(null);
-  const [step, setStep] = React.useState(1);
+
   const { cart, createOrder, emptyProductsOfCart } =
     React.useContext(CartContext);
   const [name, setName] = React.useState("");

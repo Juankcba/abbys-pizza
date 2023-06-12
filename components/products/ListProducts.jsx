@@ -19,7 +19,7 @@ const ListProducts = () => {
             <Text h1>Nuestros Productos</Text>
             <Grid.Container gap={1} css={{ pt: '24px', justifyContent: 'center' }}>
                 {products.map(product => (
-                    <Grid xs={12} sm={3} md={4} key={product.id}>
+                    <Grid xs={12} sm={6} md={3} lg={2} key={product.id}>
                         <CardProduct product={product} />
                     </Grid>
                 ))}

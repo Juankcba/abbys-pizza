@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
@@ -32,6 +33,7 @@ type Anchor = "top" | "left" | "bottom" | "right";
 
 export default function DrawerCustom() {
   const { cart, updateCartQuantity } = React.useContext(CartContext);
+  const [step, setStep] = React.useState(1);
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -65,82 +67,110 @@ export default function DrawerCustom() {
       setState({ ...state, [anchor]: open });
     };
 
+  useEffect(() => {
+    if (step === 3) {
+      setTimeout(() => {
+        setStep(1);
+      }, 1000);
+    }
+  }, [step]);
+
   const list = (anchor: Anchor) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 350 }}
       role="presentation"
     >
       <Row css={{ m: "24px" }}>
-        {cart.length === 0 ? (
-          <Text h2>Carrito Vacio</Text>
+        {cart.length === 0 && step == 1 ? (
+          <Col
+            css={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <Text h2>Carrito Vacio</Text>
+            <div style={{ margin: "0 auto" }}>
+              <Image
+                src="/assets/img/empty-cart.png"
+                alt="carrito-vacio"
+                width={200}
+                height={200}
+              />
+            </div>
+          </Col>
         ) : (
           <Row css={{ display: "flex", flexDirection: "column" }}>
-            <Text h2>Checkout</Text>
-            {cart.map((product, index) => (
-              <Grid.Container key={index} gap={1}>
-                <Grid xs={4}>
-                  <Card>
-                    <Card.Body
-                      css={{
-                        p: 0,
-                        position: "relative",
-                        bottom: 0,
-                        left: 0,
-                        bg: "transparent",
-                      }}
-                    >
-                      <Card.Image
-                        src={product.image}
-                        alt={product.title}
-                        objectFit="cover"
-                        width="100%"
-                        height={140}
-                      />
-                    </Card.Body>
-                  </Card>
-                </Grid>
-                <Grid xs={8}>
-                  <Row css={{ display: "flex", flexDirection: "column" }}>
-                    <Text h3 css={{ mb: 0 }}>
-                      {product.title}
-                    </Text>
-                    <Text>Cantitad: {product.quantity}</Text>
-                    <Text>
-                      SubTotal:{" "}
-                      {currency.format(product.price * product.quantity)}
-                    </Text>
-                    <Row
-                      gap={1}
-                      css={{
-                        p: 0,
-                        mt: "8px",
-                        width: "100%",
-                        gap: "12px",
-                        justifyContent: "flex-start",
-                        alignItems: "center",
-                      }}
-                    >
-                      <NextButton
-                        flat
-                        auto
-                        onPress={() => countQuantity(false, product)}
-                      >
-                        -
-                      </NextButton>
-                      <Text>{product.quantity}</Text>
-                      <NextButton
-                        flat
-                        auto
-                        onPress={() => countQuantity(true, product)}
-                      >
-                        +
-                      </NextButton>
-                    </Row>
-                  </Row>
-                </Grid>
-              </Grid.Container>
-            ))}
-            <CheckoutStepper />
+            {step != 3 && (
+              <React.Fragment>
+                <Text h2>Checkout</Text>
+                {cart.map((product, index) => (
+                  <Grid.Container key={index} gap={1}>
+                    <Grid xs={4}>
+                      <Card>
+                        <Card.Body
+                          css={{
+                            p: 0,
+                            position: "relative",
+                            bottom: 0,
+                            left: 0,
+                            bg: "transparent",
+                          }}
+                        >
+                          <Card.Image
+                            src={product.image}
+                            alt={product.title}
+                            objectFit="cover"
+                            width="100%"
+                            height={140}
+                          />
+                        </Card.Body>
+                      </Card>
+                    </Grid>
+                    <Grid xs={8}>
+                      <Row css={{ display: "flex", flexDirection: "column" }}>
+                        <Text h3 css={{ mb: 0 }}>
+                          {product.title}
+                        </Text>
+                        <Text>Cantitad: {product.quantity}</Text>
+                        <Text>
+                          SubTotal:{" "}
+                          {currency.format(product.price * product.quantity)}
+                        </Text>
+                        <Row
+                          gap={1}
+                          css={{
+                            p: 0,
+                            mt: "8px",
+                            width: "100%",
+                            gap: "12px",
+                            justifyContent: "flex-start",
+                            alignItems: "center",
+                          }}
+                        >
+                          <NextButton
+                            flat
+                            auto
+                            onPress={() => countQuantity(false, product)}
+                          >
+                            -
+                          </NextButton>
+                          <Text>{product.quantity}</Text>
+                          <NextButton
+                            flat
+                            auto
+                            onPress={() => countQuantity(true, product)}
+                          >
+                            +
+                          </NextButton>
+                        </Row>
+                      </Row>
+                    </Grid>
+                  </Grid.Container>
+                ))}
+              </React.Fragment>
+            )}
+            <CheckoutStepper step={step} setStep={setStep} />
           </Row>
         )}
       </Row>
