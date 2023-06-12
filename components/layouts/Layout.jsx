@@ -17,10 +17,10 @@ const Layout = ({ children }) => {
             }}
         >
             <Head>
-                <title>El Pocito Dulce</title>
+                <title>ABBY'S PIZZA</title>
                 <meta
                     name="description"
-                    content="El Pocito Dulce de Miraflores, Puerto Rico"
+                    content="ABBY'S PIZZA, Puerto Rico"
                 />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
