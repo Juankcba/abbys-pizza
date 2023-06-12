@@ -27,7 +27,7 @@ const Layout = ({ children }) => {
             </Head>
             <Navbar variant={"sticky"} >
                 <Navbar.Brand>
-                    <Image src={'/assets/img/logo.jpeg'} alt="logo" width={133} height={75} css={{ objectFit: 'contain' }} />
+                    <Image src={'/assets/img/logos.jpeg'} alt="logo" width={133} height={75} css={{ objectFit: 'contain' }} />
                 </Navbar.Brand>
 
                 <Navbar.Content>
