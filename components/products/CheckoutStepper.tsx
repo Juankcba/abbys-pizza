@@ -23,7 +23,7 @@ export type OrderResponseBody = {
 };
 interface Props {
   step: number;
-  setStep?: Dispatch<SetStateAction<number>>;
+  setStep: Dispatch<SetStateAction<number>>;
 }
 
 const CheckoutStepper: FC<Props> = ({ step, setStep }) => {

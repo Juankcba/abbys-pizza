@@ -81,7 +81,7 @@ export default function DrawerCustom() {
       role="presentation"
     >
       <Row css={{ m: "24px" }}>
-        {cart.length === 0 && step == 1 ? (
+        {cart.length === 0 && step != 3 ? (
           <Col
             css={{
               display: "flex",
