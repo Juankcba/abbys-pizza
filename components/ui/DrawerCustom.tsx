@@ -3,14 +3,7 @@ import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { CartContext } from "../../context/cart/cartContext";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
@@ -22,17 +15,17 @@ import {
   Row,
   Text,
   Button as NextButton,
+  Badge,
 } from "@nextui-org/react";
-import { PayPalButtons } from "@paypal/react-paypal-js";
-import { appApi } from "@/apis";
-import { Box as BoxNext } from "./Box";
 import { currency } from "@/utils";
 import CheckoutStepper from "../products/CheckoutStepper";
 import { ICartProduct } from "@/interfaces";
+import { toast } from "react-toastify";
 type Anchor = "top" | "left" | "bottom" | "right";
 
 export default function DrawerCustom() {
-  const { cart, updateCartQuantity } = React.useContext(CartContext);
+  const { cart, removeCartProduct, updateCartQuantity } =
+    React.useContext(CartContext);
   const [step, setStep] = React.useState(1);
   const [state, setState] = React.useState({
     top: false,
@@ -40,6 +33,20 @@ export default function DrawerCustom() {
     bottom: false,
     right: false,
   });
+
+  const handleDelete = (product: ICartProduct) => {
+    removeCartProduct(product);
+    toast.error("Producto Eliminado del Carrito", {
+      position: "top-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
 
   const countQuantity = (state: boolean, product: ICartProduct) => {
     let aux = product;
@@ -122,9 +129,23 @@ export default function DrawerCustom() {
                             alt={product.title}
                             objectFit="cover"
                             width="100%"
-                            height={140}
+                            height={130}
                           />
                         </Card.Body>
+                        <Card.Footer css={{ p: "0px" }}>
+                          <NextButton
+                            auto
+                            css={{
+                              borderRadius: "0px 0px 6px 6px",
+                              minWidth: "100%",
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                            onPress={() => handleDelete(product)}
+                          >
+                            <DeleteForeverIcon />
+                          </NextButton>
+                        </Card.Footer>
                       </Card>
                     </Grid>
                     <Grid xs={8}>
@@ -182,7 +203,15 @@ export default function DrawerCustom() {
       {(["right"] as const).map((anchor) => (
         <React.Fragment key={anchor}>
           <Button onClick={toggleDrawer(anchor, true)}>
-            {cart.length > 0 ? <LocalMallIcon /> : <ShoppingCartIcon />}
+            {cart.length > 0 ? (
+              <Badge content={cart.length}>
+                <LocalMallIcon />
+              </Badge>
+            ) : (
+              <Badge content={cart.length}>
+                <ShoppingCartIcon />
+              </Badge>
+            )}
           </Button>
           <Drawer
             anchor={anchor}

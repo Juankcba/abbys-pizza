@@ -44,14 +44,11 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
         const subTotal = orderItems.reduce((prev, current) => {
 
 
-            return (current.price * current.quantity) + prev
+            return (current.price * current.quantity * (1 + (current.taxes / 100))) + prev
         }, 0);
 
 
-        const taxRate = Number(process.env.NEXT_PUBLIC_TAX_RATE || 0);
-        const backendTotal = subTotal * (taxRate + 1);
-
-        if (total !== backendTotal) {
+        if (total !== subTotal) {
             throw new Error('El total no cuadra con el monto');
         }
 

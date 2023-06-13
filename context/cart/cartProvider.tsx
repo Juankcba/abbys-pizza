@@ -78,16 +78,22 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
       0
     );
     const subTotal = state.cart.reduce(
-      (prev, current) => current.price * current.quantity + prev,
+      (prev, current) =>
+        current.price * current.quantity * (current.taxes / 100) + prev,
       0
     );
-    const taxRate = Number(process.env.NEXT_PUBLIC_TAX_RATE || 0);
+
+    const total = state.cart.reduce(
+      (prev, current) =>
+        current.price * current.quantity * (1 + current.taxes / 100) + prev,
+      0
+    );
 
     const orderSummary = {
       numberOfItems,
       subTotal,
-      tax: subTotal * taxRate,
-      total: subTotal * (taxRate + 1),
+      tax: subTotal,
+      total: total,
     };
 
     dispatch({ type: "[Cart] - Update order summary", payload: orderSummary });
@@ -164,6 +170,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
     hasError: boolean;
     message: string;
   }> => {
+    const { address, name, phone } = JSON.parse(user);
     const body: IOrder = {
       orderItems: state.cart.map((p) => ({
         ...p,
@@ -174,7 +181,9 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
       tax: state.tax,
       total: state.total,
       isPaid: false,
-      user: user,
+      user: name,
+      address: address,
+      phone: phone,
     };
 
     try {

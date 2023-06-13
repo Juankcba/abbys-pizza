@@ -4,6 +4,7 @@ import { Box } from '../ui/Box';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { CartContext } from '../../context/cart/cartContext';
 import { currency } from '@/utils';
+import { toast } from 'react-toastify';
 const CardProduct = ({ product }) => {
     const { addProductToCart } = useContext(CartContext)
     const [isPressed, setIsPressed] = useState(false);
@@ -22,9 +23,19 @@ const CardProduct = ({ product }) => {
             price: product.price,
             title: product.title,
             slug: product.slug,
+            taxes: product.taxes,
             quantity: quantity
         }
-
+        toast.success('Producto Agregado al Carrito', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
         addProductToCart(productAux)
         setQuantity(0)
         setTimeout(() => {

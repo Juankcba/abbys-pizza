@@ -5,11 +5,11 @@ import { Grid, Container, Text } from '@nextui-org/react';
 const ListCalzones = () => {
 
     const [products, setProducts] = useState([
-        { title: 'Pollo', slug: 'calzone-pollo', image: '/assets/products/soda3.jpg', price: 10.95, id: 1, description: '' },
-        { title: 'Queso', slug: 'calzone-queso', image: '/assets/products/soda3.jpg', price: 9.95, id: 2, description: '' },
-        { title: 'Pepperoni', slug: 'calzone-peperoni', image: '/assets/products/soda3.jpg', price: 11.95, id: 3, description: '' },
-        { title: 'Chorizo', slug: 'calzone-chorizo', image: '/assets/products/soda3.jpg', price: 10.95, id: 4, description: '' },
-        { title: 'Combinación', slug: 'calzone-combinacion', image: '/assets/products/soda3.jpg', price: 14.95, id: 5, description: '' },
+        { title: 'Pollo', taxes:11.5 ,slug: 'calzone-pollo', image: '/assets/products/soda3.jpg', price: 10.95, id: 1, description: '' },
+        { title: 'Queso', taxes:11.5 ,slug: 'calzone-queso', image: '/assets/products/soda3.jpg', price: 9.95, id: 2, description: '' },
+        { title: 'Pepperoni',taxes:11.5 , slug: 'calzone-peperoni', image: '/assets/products/soda3.jpg', price: 11.95, id: 3, description: '' },
+        { title: 'Chorizo',taxes:11.5 , slug: 'calzone-chorizo', image: '/assets/products/soda3.jpg', price: 10.95, id: 4, description: '' },
+        { title: 'Combinación',taxes:11.5 , slug: 'calzone-combinacion', image: '/assets/products/soda3.jpg', price: 14.95, id: 5, description: '' },
 
     ])
 

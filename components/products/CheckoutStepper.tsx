@@ -5,8 +5,9 @@ import {
   Button,
   Input,
   Loading,
+  Checkbox,
 } from "@nextui-org/react";
-import React, { Dispatch, FC, SetStateAction } from "react";
+import React, { Dispatch, FC, Fragment, SetStateAction } from "react";
 import { currency } from "@/utils";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { CartContext } from "@/context";
@@ -33,12 +34,18 @@ const CheckoutStepper: FC<Props> = ({ step, setStep }) => {
   const { cart, createOrder, emptyProductsOfCart } =
     React.useContext(CartContext);
   const [name, setName] = React.useState("");
+  const [address, setAddress] = React.useState("");
+
+  const [phone, setPhone] = React.useState("");
+  const [deliver, setDeliver] = React.useState(false);
   const [isPosting, setIsPosting] = React.useState(false);
 
   const [errorMessage, setErrorMessage] = React.useState("");
   const handleCreateOrder = async () => {
     setIsPosting(true);
-    const { hasError, message } = await createOrder(name);
+    const { hasError, message } = await createOrder(
+      JSON.stringify({ name: name, address: address, phone: phone })
+    );
 
     if (hasError) {
       setIsPosting(false);
@@ -109,11 +116,14 @@ const CheckoutStepper: FC<Props> = ({ step, setStep }) => {
         <Text h4>
           {currency.format(
             cart
-              .flatMap((product) => product.price * product.quantity)
+              .flatMap(
+                (product) =>
+                  (product.price * product.quantity * product.taxes) / 100
+              )
               .reduce(
                 (accumulator, currentValue) => accumulator + currentValue,
                 0
-              ) * 0.21
+              )
           )}
         </Text>
         <Text h2 css={{ mb: "0" }}>
@@ -122,16 +132,19 @@ const CheckoutStepper: FC<Props> = ({ step, setStep }) => {
         <Text h3>
           {currency.format(
             cart
-              .flatMap((product) => product.price * product.quantity)
+              .flatMap(
+                (product) =>
+                  product.price * product.quantity * (1 + product.taxes / 100)
+              )
               .reduce(
                 (accumulator, currentValue) => accumulator + currentValue,
                 0
-              ) * 1.21
+              )
           )}
         </Text>
       </Row>
       {step == 1 && (
-        <Row css={{ flexDirection: "column", gap: "8px", maxW: "200px" }}>
+        <Row css={{ flexDirection: "column", gap: "8px", maxW: "300px" }}>
           <Input
             name="name"
             value={name}
@@ -140,6 +153,29 @@ const CheckoutStepper: FC<Props> = ({ step, setStep }) => {
             label="Nombre"
             onChange={(e) => setName(e.target.value)}
           />
+          <Checkbox name="deliver" isSelected={deliver} onChange={setDeliver}>
+            Enviar a domicilio
+          </Checkbox>
+          {deliver && (
+            <Fragment>
+              <Input
+                name="address"
+                value={address}
+                fullWidth
+                placeholder="Dirección"
+                label="Dirección"
+                onChange={(e) => setAddress(e.target.value)}
+              />
+              <Input
+                name="phone"
+                value={phone}
+                fullWidth
+                placeholder="Celular"
+                label="Celular"
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </Fragment>
+          )}
           <Button
             css={{ w: "100%" }}
             type="button"
@@ -169,24 +205,25 @@ const CheckoutStepper: FC<Props> = ({ step, setStep }) => {
                 purchase_units: [
                   {
                     amount: {
-                      value: `${
-                        cart
-                          .flatMap(
-                            (product) => product.price * product.quantity
-                          )
-                          .reduce(
-                            (accumulator, currentValue) =>
-                              accumulator + currentValue,
-                            0
-                          ) * 1.21
-                      }`,
+                      value: `${cart
+                        .flatMap(
+                          (product) =>
+                            product.price *
+                            product.quantity *
+                            (1 + product.taxes / 100)
+                        )
+                        .reduce(
+                          (accumulator, currentValue) =>
+                            accumulator + currentValue,
+                          0
+                        )
+                        .toFixed(2)}`,
                     },
                   },
                 ],
               });
             }}
             onApprove={(data, actions) => {
-              console.log("holaaa", actions, data);
               return actions.order!.capture().then((details: any) => {
                 onOrderCompleted(details);
                 // console.log({ details  })

@@ -4,10 +4,12 @@ import { IOrder } from '../interfaces';
 const orderSchema = new Schema({
 
     user: { type: String, required: true },
+    address: { type: String },
+    phone: { type: String },
     orderItems: [{
         _id: { type: String, required: true },
         title: { type: String, required: true },
-
+        taxes: { type: Number, required: true },
         quantity: { type: Number, required: true },
         slug: { type: String, required: true },
         image: { type: String, required: true },

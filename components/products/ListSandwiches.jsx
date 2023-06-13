@@ -5,11 +5,11 @@ import { Grid, Container, Text } from '@nextui-org/react';
 const ListSandwiches = () => {
 
     const [products, setProducts] = useState([
-        { title: 'Choripan', slug: 'sandwich-choripan', image: '/assets/products/soda3.jpg', price: 8.95, id: 1, description: '' },
-        { title: 'Jamon y queso', slug: 'sandwich-jamon-queso', image: '/assets/products/soda3.jpg', price: 5.95, id: 2, description: '' },
-        { title: 'Pollo', slug: 'sandwich-pollo', image: '/assets/products/soda3.jpg', price: 8.95, id: 3, description: '' },
-        { title: 'Albondigas', slug: 'sandwich-albondigas', image: '/assets/products/soda3.jpg', price: 8.75, id: 4, description: '' },
-        { title: 'Combinación', slug: 'sandwich-combinacion', image: '/assets/products/soda3.jpg', price: 9.95, id: 5, description: '' },
+        { title: 'Choripan', taxes: 11.5, slug: 'sandwich-choripan', image: '/assets/products/soda3.jpg', price: 8.95, id: 1, description: '' },
+        { title: 'Jamon y queso', taxes: 11.5, slug: 'sandwich-jamon-queso', image: '/assets/products/soda3.jpg', price: 5.95, id: 2, description: '' },
+        { title: 'Pollo', taxes: 11.5, slug: 'sandwich-pollo', image: '/assets/products/soda3.jpg', price: 8.95, id: 3, description: '' },
+        { title: 'Albondigas', taxes: 11.5, slug: 'sandwich-albondigas', image: '/assets/products/soda3.jpg', price: 8.75, id: 4, description: '' },
+        { title: 'Combinación', taxes: 11.5, slug: 'sandwich-combinacion', image: '/assets/products/soda3.jpg', price: 9.95, id: 5, description: '' },
 
     ])
 

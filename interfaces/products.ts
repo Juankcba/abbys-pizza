@@ -4,7 +4,7 @@ export interface IProduct {
     images: string[];
     inStock: number;
     price: number;
-
+    taxes: number;
     slug: string;
     tags: string[];
     title: string;

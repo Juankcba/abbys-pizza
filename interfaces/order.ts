@@ -3,6 +3,8 @@ export interface IOrder {
 
     _id?: string;
     user?: string;
+    address?: string;
+    phone?: string;
     orderItems: IOrderItem[];
     paymentResult?: string;
 
@@ -23,7 +25,7 @@ export interface IOrder {
 export interface IOrderItem {
     _id: string;
     title: string;
-
+    taxes: number;
     quantity: number;
     slug: string;
     image: string;
